@@ -1,6 +1,6 @@
 import expensesReducer from '../../reducers/expenses';
 import expenses from "../fixtures/expenses";
-import moment from "moment/moment";
+import moment from "moment";
 import uuid from "uuid";
 
 test('should setup default expenses values', () => {

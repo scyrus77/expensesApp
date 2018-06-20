@@ -31,7 +31,7 @@ export default class ExpenseForm extends Component {
     }
   };
 
-  onDateFocusChange = ({ focused }) => {
+  onFocusChange = ({ focused }) => {
     this.setState(() => ({ calendarFocused: focused }));
   };
 
@@ -52,11 +52,9 @@ export default class ExpenseForm extends Component {
       this.setState( () => ({error: 'Please provide description and amount.'}))
     } else {
       this.setState( () => ({error: ''}));
-      console.log('submitted');
       this.props.onSubmit({
         description: this.state.description,
         amount: parseFloat(this.state.amount) * 100,
-        // amount: parseFloat(this.state.amount, 10) * 100,
         createdAt: this.state.createdAt.valueOf(),
         note: this.state.note
       });
@@ -75,29 +73,27 @@ export default class ExpenseForm extends Component {
             value={ this.state.description }
             onChange={ this.onDescriptionChange }
           />
-          <br/>
           <input
             type="text"
             placeholder="Amount"
             value={ this.state.amount }
             onChange={ this.onAmountChange }
           />
-          <br/>
           <SingleDatePicker
-            date={ this.state.createdAt }
-            onDateChange={ this.onDateChange }
+            date={this.state.createdAt}
+            onDateChange={this.onDateChange}
             focused={ this.state.calendarFocused }
-            onFocusChange={ this.onDateFocusChange }
+            onFocusChange={this.onFocusChange}
             numberOfMonths={1}
-            isOutsideRange={ () => false }
+            isOutsideRange={() => false}
           />
           <textarea
             placeholder="Add a note for your expense (optional)"
+            className="textarea"
             value={ this.state.note }
             onChange={ this.onNoteChange }
           >
           </textarea>
-          <br/>
           <button>Add Expense</button>
           {
             this.state.id && <button onClick={ ()=> this.props.onDelete() }>Remove</button>
