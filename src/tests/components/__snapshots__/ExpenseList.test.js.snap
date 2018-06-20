@@ -28,3 +28,11 @@ exports[`should render ExpenseList with expenses 1`] = `
   />
 </div>
 `;
+
+exports[`should render ExpenseList with no expenses 1`] = `
+<div>
+  <p>
+     No Expenses 
+  </p>
+</div>
+`;
