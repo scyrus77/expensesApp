@@ -4,7 +4,7 @@ import { DateRangePicker } from 'react-dates';
 
 import { setTextFilter, sortByAmount, sortByDate, setStartDate, setEndDate } from '../actions/filters';
 
-class ExpressListFilters extends Component {
+class ExpenseListFilters extends Component {
 
   state = {
     calendarFocused: null,
@@ -73,4 +73,4 @@ const mapStateToProps = ({ filters }) => {
   return { filters }
 };
 
-export default connect(mapStateToProps)(ExpressListFilters);
+export default connect(mapStateToProps)(ExpenseListFilters);

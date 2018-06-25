@@ -52,7 +52,7 @@ test('should not set amount if invalid input', () => {
 
 test('should call onSubmit prop for valid form submission', () => {
   const onSubmitSpy = jest.fn();
-  const wrapper = shallow(<ExpenseForm expense={ expenses[0] } onSubmit={onSubmitSpy}/>);
+  const wrapper = shallow(<ExpenseForm expense={ expenses[0] } onSubmit={ onSubmitSpy }/>);
   wrapper.find('form').simulate('submit', { preventDefault: () => {} });
   expect(wrapper.state('error')).toBe('');
   const testData = {...expenses[0]};
