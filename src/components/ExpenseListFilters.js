@@ -4,19 +4,32 @@ import { DateRangePicker } from 'react-dates';
 
 import { setTextFilter, sortByAmount, sortByDate, setStartDate, setEndDate } from '../actions/filters';
 
-class ExpenseListFilters extends Component {
+export class ExpenseListFilters extends Component {
 
   state = {
     calendarFocused: null,
   };
 
   onDatesChange = ({startDate, endDate}) => {
-    this.props.dispatch(setStartDate(startDate));
-    this.props.dispatch(setEndDate(endDate));
+    this.props.setStartDate(startDate);
+    this.props.setEndDate(endDate);
   };
 
   onFocusChange = (calendarFocused) => {
     this.setState( () => ({calendarFocused}) );
+  };
+
+  onTextChange = (e) => {
+    this.props.setTextFilter(e.target.value);
+  };
+
+  onSortChange = (e) => {
+    // console.log('Select onChange', e.target.value);
+    if (e.target.value === 'amount') {
+      this.props.sortByAmount();
+    } else if (e.target.value === 'date') {
+      this.props.sortByDate();
+    }
   };
 
   render() {
@@ -24,21 +37,12 @@ class ExpenseListFilters extends Component {
       <div>
         <input
           type="text"
-          value={this.props.filters.text}
-          onChange={(e) => {
-            this.props.dispatch(setTextFilter(e.target.value));
-          }}
+          value={ this.props.filters.text }
+          onChange={ this.onTextChange }
         />
         <select
-          value={this.props.filters.sortBy}
-          onChange={(e) => {
-            console.log('Select onChange', e.target.value);
-            if (e.target.value === 'amount') {
-              this.props.dispatch(sortByAmount());
-            } else if (e.target.value === 'date') {
-              this.props.dispatch(sortByDate());
-            }
-          }}
+          value={ this.props.filters.sortBy }
+          onChange={ this.onSortChange }
         >
           <option value="date">Date</option>
           <option value="amount">Amount</option>
@@ -61,16 +65,16 @@ class ExpenseListFilters extends Component {
     )
   }
 
-
-
 }
 
-// const handleChange = ( e ) => {
-//   console.log('in handleChange', e.target.value )
-// };
+const mapStateToProps = ({ filters }) => ({ filters });
 
-const mapStateToProps = ({ filters }) => {
-  return { filters }
-};
+const mapDispatchProps = (dispatch) => ({
+  setEndDate: (endDate) => dispatch(setEndDate(endDate)),
+  setStartDate: (startDate) => dispatch(setStartDate(startDate)),
+  setTextFilter: (text) => dispatch(setTextFilter(text)),
+  sortByAmount: () => dispatch(sortByAmount()),
+  sortByDate: () => dispatch(sortByDate()),
+});
 
-export default connect(mapStateToProps)(ExpenseListFilters);
+export default connect(mapStateToProps, mapDispatchProps)(ExpenseListFilters);
