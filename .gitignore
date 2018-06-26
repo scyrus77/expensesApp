@@ -1,5 +1,9 @@
-.DS_Store
 node_modules/
+public/bundle.js
+public/bundle.js.map
+public/styles.css
+public/styles.css.map
+.DS_Store
 .idea
 *.log
 *.lock
