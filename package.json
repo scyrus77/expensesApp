@@ -14,7 +14,7 @@
     "test": "jest --config=jest.config.json",
     "testw": "jest --watch",
     "start": "node server/server.js",
-    "heroku-postbuild": "yarn run build:prod"
+    "heroku-postbuild": "npm run build:prod"
   },
   "dependencies": {
     "babel-cli": "6.24.1",
