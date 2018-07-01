@@ -6,7 +6,7 @@ import configureStore from './store/configureStore';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
-// import { addExpense } from './actions/expenses';
+import { startSetExpenses } from './actions/expenses';
 import getVisibleExpenses from './selectors/expenses';
 import './firebase/firebase';
 // import './playground/promises';
@@ -23,10 +23,16 @@ store.subscribe(() => {
 // store.dispatch(addExpense({ description: 'Gas bill', amount: 16600, createdAt: 1000 }));
 // store.dispatch(addExpense({ description: 'Rent', amount: 134500 }));
 
-ReactDOM.render(
+const mainView = (
   <Provider store={store}>
     <AppRouter/>
-  </Provider>,
-  document.getElementById('app')
+  </Provider>
 );
+
+ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
+
+store.dispatch(startSetExpenses())
+  .then(() => {
+    ReactDOM.render(mainView, document.getElementById('app'));
+  });
 
