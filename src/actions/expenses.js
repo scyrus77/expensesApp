@@ -1,26 +1,6 @@
 import uuid from "uuid";
 import database from '../firebase/firebase';
 
-// export const addExpense = (
-//   {
-//     description = '',
-//     note = '',
-//     amount = 0,
-//     createdAt = 0
-//   } = {}
-// ) => (
-//   {
-//     type: 'ADD_EXPENSE',
-//     expense: {
-//       id: uuid(),
-//       description,
-//       note,
-//       amount,
-//       createdAt
-//     }
-//   }
-// );
-
 // ADD_EXPENSE
 export const addExpense = (expense) => ({
   type: 'ADD_EXPENSE',
@@ -69,6 +49,16 @@ export const editExpense = (id, updates) => ({
   updates
 });
 
+export const startEditExpense = (id, updates) => {
+  // console.log('startEditExpense', updates);
+  return (dispatch) => {
+    return database.ref(`expenses/${id}`).update(updates)
+      .then(() => {
+        dispatch(editExpense(id, updates));
+      });
+  };
+};
+
 // SEAT_EXPENSES
 export const setExpenses = (expenses) => ({
   type: 'SET_EXPENSES',
@@ -86,7 +76,7 @@ export const startSetExpenses = () => {
             ...childSnapshot.val()
           });
         });
-        // console.log('expenses', expenses);
+        // console.log('startSetExpenses', expenses);
         dispatch(setExpenses(expenses));
       });
   };
