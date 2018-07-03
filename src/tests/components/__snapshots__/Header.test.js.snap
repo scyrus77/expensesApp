@@ -3,13 +3,13 @@
 exports[`should render header correctly 1`] = `
 <header>
   <h1>
-    Expensify
+    Expenses App
   </h1>
   <NavLink
     activeClassName="is-active"
     ariaCurrent="true"
     exact={true}
-    to="/"
+    to="/dashboard"
   >
     Home
   </NavLink>
@@ -18,14 +18,12 @@ exports[`should render header correctly 1`] = `
     ariaCurrent="true"
     to="/create"
   >
-    Add Expense
+    Create Expense
   </NavLink>
-  <NavLink
-    activeClassName="is-active"
-    ariaCurrent="true"
-    to="/edit"
+  <button
+    onClick={[Function]}
   >
-    Edit Expense
-  </NavLink>
+    Logout
+  </button>
 </header>
 `;

@@ -8,7 +8,7 @@ import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 import { startSetExpenses } from './actions/expenses';
 import getVisibleExpenses from './selectors/expenses';
-import './firebase/firebase';
+import { firebase } from './firebase/firebase';
 // import './playground/promises';
 
 const store = configureStore();
@@ -18,10 +18,6 @@ store.subscribe(() => {
   const visibleExpenses = getVisibleExpenses(expenses, filters);
   console.log(visibleExpenses);
 });
-
-// store.dispatch(addExpense({ description: 'Water bill', amount: 23200 }));
-// store.dispatch(addExpense({ description: 'Gas bill', amount: 16600, createdAt: 1000 }));
-// store.dispatch(addExpense({ description: 'Rent', amount: 134500 }));
 
 const mainView = (
   <Provider store={store}>
@@ -36,3 +32,11 @@ store.dispatch(startSetExpenses())
     ReactDOM.render(mainView, document.getElementById('app'));
   });
 
+firebase.auth().onAuthStateChanged( user => {
+  if (user) {
+    console.log('log in');
+
+  } else {
+    console.log('log out');
+  }
+});
