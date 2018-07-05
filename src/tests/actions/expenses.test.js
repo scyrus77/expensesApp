@@ -14,13 +14,16 @@ import expenses from '../fixtures/expenses';
 import database from '../../firebase/firebase';
 
 const createMockStore = configureMockStore([thunk]);
+const uid = 'abd123';
+let store;
 
 beforeEach((done) => {
+  store = createMockStore({ auth: { uid } });
   const expensesData = {};
   expenses.forEach(({ id, description, note, amount, createdAt }) => {
     expensesData[id] = { description, note, amount, createdAt };
   });
-  database.ref('expenses').set(expensesData)
+  database.ref(`users/${uid}/expenses`).set(expensesData)
     .then(() => done());
 });
 
@@ -41,7 +44,6 @@ test('should setup editExpense action object', () => {
 });
 
 test('should edit expense in the database', (done) => {
-  const store = createMockStore({});
   const id = expenses[0].id;
   const updates = { amount: 500 };
   // console.log('test StartEditExpense updates', updates);
@@ -53,7 +55,7 @@ test('should edit expense in the database', (done) => {
         id,
         updates
       });
-      return database.ref(`expenses/${id}`).once('value');
+      return database.ref(`users/${uid}/expenses/${id}`).once('value');
     })
     .then( snapshot => {
       const val = snapshot.val();
@@ -71,7 +73,6 @@ test('should setup removeExpense action object', () => {
 });
 
 test('should remove an expense from the database', (done) => {
-  const store = createMockStore({});
   const id = expenses[1].id;
   store.dispatch(startRemoveExpense({ id }))
     .then(() => {
@@ -80,7 +81,7 @@ test('should remove an expense from the database', (done) => {
         type: 'REMOVE_EXPENSE',
         id
       });
-      return database.ref(`expenses/${id}`).once('value')
+      return database.ref(`users/${uid}/expenses/${id}`).once('value')
     }).then( snapshot => {
         expect(snapshot.val()).toBeFalsy();
         done();
@@ -97,7 +98,6 @@ test('should setup addExpense action object with provided values', () => {
 });
 
 test('should add expense to database and store', (done) => {
-  const store = createMockStore({});
   const expenseData = {...expenses[0]};
   delete expenseData.id;
   store.dispatch(startAddExpense(expenseData))
@@ -111,7 +111,7 @@ test('should add expense to database and store', (done) => {
         }
       });
 
-      return database.ref(`expenses/${actions[0].expense.id}`).once('value');
+      return database.ref(`users/${uid}/expenses/${actions[0].expense.id}`).once('value');
     }).then((snapshot) => {
       expect(snapshot.val()).toEqual(expenseData);
       done();
@@ -119,7 +119,6 @@ test('should add expense to database and store', (done) => {
 });
 
 test('should add expense with defaults to database and store', (done) => {
-  const store = createMockStore({});
 
   const defaultExpenseData = {
     description: '',
@@ -139,7 +138,7 @@ test('should add expense with defaults to database and store', (done) => {
         }
       });
 
-      return database.ref(`expenses/${actions[0].expense.id}`).once('value');
+      return database.ref(`users/${uid}/expenses/${actions[0].expense.id}`).once('value');
     }).then((snapshot) => {
       expect(snapshot.val()).toEqual(defaultExpenseData);
       done();
@@ -155,7 +154,6 @@ test('should setup setExpenses action object with data', () => {
 });
 
 test('should fetch the expenses from the database', (done) => {
-  const store = createMockStore({});
   store.dispatch(startSetExpenses())
     .then(() => {
       const actions = store.getActions();
